@@ -5,20 +5,28 @@ public class ObstacleMove : MonoBehaviour {
 
     public Rigidbody Barrelrb;
     public GameObject Barrel;
+    private Transform playerTransform;
+    public static bool barrelRoll = false;
 
-	// Use this for initialization
-	void Start () {
-
-	}
+    // Use this for initialization
+    void Start ()
+    {
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+    }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        if (playerTransform.position.z >= Barrel.transform.position.z - 11)
+        {
+            Barrelrb.AddForce(1, 0, 0, ForceMode.Impulse);
+            Barrelrb.constraints = RigidbodyConstraints.None;
+            barrelRoll = true;
+        }
 
-        if(Barrel.transform.position.x <= -2)
-            Barrelrb.AddForce(5, 0, 0, ForceMode.Impulse);
-
-        if(Barrel.transform.position.x >= 2)
-            Barrelrb.AddForce(-5, 0, 0, ForceMode.Impulse);
-
+        if (playerTransform.position.z >= Barrel.transform.position.z)
+        {
+            barrelRoll = false;
+        }
     }
 }

@@ -11,9 +11,11 @@ public class TileGenerate : MonoBehaviour {
     private float tileLength = 20.0f;
     private int tilesOnScreen = 7;
     private int lastPrefabIndex = 0;
-    private float safeZone = 15.0f;
+    private float safeZone = 60.0f;
 
     private List<GameObject> activeTiles;
+
+    float count = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -29,12 +31,12 @@ public class TileGenerate : MonoBehaviour {
             else
                 SpawnTile();
         }
-
-
     }
 	
 	// Update is called once per frame
 	void Update () {
+
+        count += Time.deltaTime;
 
         if (playerTransform.position.z - safeZone > (spawnZ - tilesOnScreen * tileLength))
         {
@@ -73,11 +75,13 @@ public class TileGenerate : MonoBehaviour {
         int randomIndex = lastPrefabIndex;
         while (randomIndex == lastPrefabIndex)
         {
-            randomIndex = Random.Range(0, tilePrefabs.Length);
+            if(count < 10)
+                randomIndex = Random.Range(0, tilePrefabs.Length - 1);
+            if(count >= 10)
+                randomIndex = Random.Range(0, tilePrefabs.Length);
         }
 
         lastPrefabIndex = randomIndex;
         return randomIndex;
-
     }
 }
